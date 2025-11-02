@@ -5,7 +5,7 @@ This repository provides a complete local and Kubernetes-ready Mailpit setup wit
 It’s ideal for development and staging environments where you need to capture, test, and inspect outgoing emails.
 
 🧱 Folder Structure
-
+```
 .
 ├── config/
 │   └── dev.env                # Environment variables for Mailpit / CLI
@@ -14,30 +14,30 @@ It’s ideal for development and staging environments where you need to capture,
 ├── k8s/
 │   └── mailpit-deployment.yaml# Kubernetes manifest for Mailpit
 └── requirements.txt           # Python dependencies
-
+```
 
 🚀 1. Quick Start — Docker Compose
 
 Run Mailpit locally for testing SMTP + Web UI:
-
+```
 docker-compose up -d
-
+```
 Mailpit UI → http://localhost:8025
 SMTP endpoint → localhost:1025
 
 Check running containers:
-
+```
 docker ps
-
+```
 Stop and clean up:
-
+```
 docker-compose down -v
-
+```
 
 ⚙️ 2. Configuration (config/dev.env)
 
 Example content:
-
+```
 MAIL_FROM=no-reply@example.com
 MAILPIT_HOST=localhost
 MAILPIT_PORT=1025
@@ -45,18 +45,18 @@ SMTP_HOST=email-smtp.ap-southeast-1.amazonaws.com
 SMTP_PORT=587
 SMTP_USER=AKIAxxxxxx
 SMTP_PASS=xxxxxxxxxxxx
-
+```
 
 💌 3. Sending Emails via CLI
 
 Install dependencies
-
+```
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-
+```
 Send plain text + HTML + attachment
-
+```
 python email_cli.py \
   --env dev \
   --to test@example.com \
@@ -64,16 +64,16 @@ python email_cli.py \
   --text "Hello plain text" \
   --html "<p>Hello <b>HTML</b></p>" \
   --attachments requirements.txt
-
+```
 ✅ Message appears instantly in Mailpit’s Web UI (http://localhost:8025)
 
 
 ☁️ 4. Deploy to Kubernetes
 
 Apply the manifest
-
+```
 kubectl apply -f k8s/mailpit-deployment.yaml
-
+```
 Access the UI
 If using an Ingress:
 
@@ -84,20 +84,20 @@ If using NodePort (Minikube or Kind):
 http://localhost:38025
 
 Check resources:
-
+```
 kubectl get all -n mailpit
-
+```
 
 🧹 5. Maintenance & Cleanup
 
 Delete all messages (keep DB)
-
+```
 curl -X DELETE http://localhost:8025/api/v1/messages
-
+```
 Delete namespace completely
-
+```
 kubectl delete namespace mailpit
-
+```
 
 🧩 6. Tips for DevOps Integration
 
